@@ -1,0 +1,13 @@
+:root {    
+    /** PALLETE */
+    --bgd-color: rgba(250, 250, 250, 1);
+    --easy-color: rgba(186, 193, 214, 1);
+    --text-color1: rgba(52, 58, 64, 1);    
+    --text-color2: rgba(104, 101, 137, 1);
+    --text-color3: rgba(215, 224, 224, 1);
+
+    /** PICTURES */
+    --bgd-img1: url('./../image/schoolwpp.png');
+    --logo-img1: url('https://image.flaticon.com/icons/png/512/65/65766.png');
+    
+}
