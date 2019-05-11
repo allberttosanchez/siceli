@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <noscript><h2>
+      Su navegador necesita Javascript para poder visualizar esta pagina correctamente.
+      </h2></noscript>
     <script src="./js/jquery-3.3.1.slim.min.js"></script>
     <script src="./js/1.14.7_umd_popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>    
