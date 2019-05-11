@@ -1,0 +1,359 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+header, header.col-12 {
+  min-width: 100vw;
+  min-height: 100px;
+  background-color: rgba(52, 58, 64, 1);
+  box-sizing: border-box;
+  padding: 0 40px;
+}
+
+nav {
+  display: flex;
+}
+
+.logo {
+  display: flex;
+  padding-top: 16px;
+  width: 100%;
+}
+.logo a {
+  display: flex;
+  align-content: center;
+  align-items: left;
+  flex-direction: column;
+}
+.logo a img {
+  display: flex;
+}
+
+.title {
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+  margin-top: 10px;
+}
+.title h2 {
+  display: flex;
+  flex-direction: column-reverse;
+  font-size: 2.5em;
+  color: #FFFFFF;
+  margin: 0;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  min-height: calc(100vh - 100px);
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(215, 224, 224, 1);
+  background-image: url(./../image/students.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.form-login-box {
+  display: flex;
+  background: rgba(104, 101, 137, 0.8);
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  max-height: 300px;
+  min-height: 300px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.form-login-box h2 {
+  color: #FFFFFF;
+  padding: 20px;
+}
+.form-login-box label {
+  width: 80%;
+  color: #293A62;
+  background: #FFFFFF;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.form-login-box .form-input {
+  border-radius: 4px;
+  width: calc(100% - 20px);
+  height: 40px;
+  border: #fff;
+  padding: 5px;
+}
+.form-login-box .form-input:focus {
+  outline: none;
+  background: #f2f2f2;
+}
+.form-login-box .form-input:focus .user, .form-login-box .form-input:focus .pass {
+  background: red;
+}
+.form-login-box .form-input.buttom {
+  width: 80%;
+}
+.form-login-box .form-input.buttom:hover {
+  background: #f7f36e;
+}
+
+@media screen and (max-width: 900px) {
+  .main {
+    background-size: 100% 100%;
+  }
+}
+@media screen and (max-width: 770px) {
+  .title, .logo {
+    justify-content: center;
+  }
+
+  .main {
+    background-size: initial;
+  }
+}
+@media screen and (max-width: 500px) {
+  .title {
+    font-size: 0.8em;
+  }
+}
+.dashboard-main {
+  background: red;
+  width: 100vw;
+  min-height: calc(100vh - 100px);
+  margin: 0;
+}
+.dashboard-main .section-wlc {
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+.dashboard-main .wlc-wrap {
+  text-align: center;
+}
+.dashboard-main aside {
+  display: flex;
+  background-color: rgba(104, 101, 137, 1);
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.dashboard-main aside h2 {
+  color: #FFFFFF;
+  font-weight: bold;
+  margin: 20px 0 60px 0;
+}
+.dashboard-main aside a {
+  display: flex;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.5em;
+  max-width: 260px;
+  min-width: 260px;
+  margin: 25px 0 25px 0;
+}
+.dashboard-main aside a:hover {
+  color: #DABC68;
+}
+.dashboard-main aside i {
+  padding: 10px;
+}
+
+.form-title {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.form-newstudent {
+  display: flex;
+  flex-wrap: wrap;
+  background: rgba(104, 101, 137, 1);
+  max-width: 800px;
+  margin: auto;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+.form-newstudent .label-form {
+  color: #FFFFFF;
+}
+.form-newstudent .label-form > span {
+  color: #FFFFFF;
+  font-size: 0.8em;
+}
+.form-newstudent .label-form input, .form-newstudent .label-form select, .form-newstudent .label-form input[type=tel] {
+  color: black;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px 10px 10px 0;
+}
+.form-newstudent .intl-tel-input {
+  margin-top: 10px;
+}
+.form-newstudent .label-form > * {
+  color: #222222;
+}
+
+.form-std-input {
+  width: 100%;
+}
+
+.label-form.lastname + .lastname, .label-form.gender, .label-form.age, .label-form.children, .label-form.email {
+  margin-left: 10px;
+}
+
+.label-form.name, .label-form.address {
+  width: 100%;
+}
+
+.label-form.lastname, .label-form.id, .label-form.gender, .label-form.date, .label-form.age, .label-form.status, .label-form.children, .label-form.phone, .label-form.email {
+  width: calc(50% - 5px);
+}
+
+.intl-tel-input {
+  width: 100%;
+}
+.intl-tel-input input.form-std-input.phonenum {
+  padding-left: 50px;
+}
+
+input.form-std-input.buttom {
+  color: black;
+  border-radius: 4px;
+  border: none;
+  padding: 20px 20px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input.form-std-input.buttom:hover {
+  background: #DABC68;
+  color: #293A62;
+}
+
+@media screen and (max-width: 760px) {
+  .form-title {
+    font-size: 1.5em;
+  }
+
+  .label-form {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
+.main-list {
+  min-height: calc(100vh - 300px);
+}
+
+.list-btn {
+  width: 100px;
+  background: rgba(52, 58, 64, 1);
+  text-align: center;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.list-btn a {
+  color: #FFFFFF;
+}
+
+.list-btn:hover {
+  background: rgba(104, 101, 137, 1);
+}
+.list-btn:hover a:hover {
+  text-decoration: none;
+}
+
+.student-table {
+  margin: auto;
+  margin-top: 50px;
+}
+.student-table th {
+  color: #FFFFFF;
+}
+.student-table td {
+  color: #222222;
+}
+.student-table td a:hover {
+  text-decoration: none;
+}
+.student-table thead th, .student-table tbody td {
+  border: solid 1px black;
+  text-align: center;
+  padding: 0 20px;
+}
+.student-table thead th {
+  background: rgba(52, 58, 64, 1) linear-gradient(rgba(52, 58, 64, 1) 50%, rgba(104, 101, 137, 1) 0);
+}
+.student-table thead th:last-child, .student-table tbody td:last-child {
+  min-width: 120px;
+}
+.student-table tbody td:nth-child(2) {
+  min-width: 220px;
+}
+.student-table tbody tr:hover {
+  background: #DABC68;
+}
+
+.student-table ul {
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin-bottom: 0;
+}
+.student-table ul li {
+  display: flex;
+  list-style: none;
+}
+.student-table ul li a {
+  display: flex;
+  margin: 0 5px;
+}
+.student-table ul li a:hover {
+  text-decoration: none;
+}
+
+@media screen and (max-width: 760px) {
+  .main-list {
+    overflow-x: scroll;
+    min-height: calc(100vh - 300px);
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .student-table {
+    overflow: auto;
+  }
+
+  .student-table td, th {
+    font-size: 0.7em;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

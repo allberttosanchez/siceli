@@ -1,0 +1,295 @@
+@import './pallete.css';
+
+/*
+    Theme Name: Siceli start Page
+    Theme URI: http://www.as-wm.com  # Donde comprar el tema
+    Author: Alberto Sanchez
+    Author URI: http://www.as-wm.com
+    Description: Tema para la start page the proyecto SICELI.
+    Version: 1.0
+    */
+@font-face {
+    font-family: Raleway;
+    src: url(./../webfonts/Raleway-Regular.ttf);    
+}
+
+@font-face {    
+    font-family: Oswald;
+    src: url(./../webfonts/Oswald-Regular.ttf);
+}
+
+body {  
+    background: var(--bgd-color3);
+    background-image: var(--bgd-img1);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    max-width: 1280px;
+    margin: auto;
+}
+/** MENU DE NAVEGACION DEL HEADER */    
+nav.row {    
+    background: var(--text-color1);    
+    align-content: space-between;
+    align-items: center;
+    flex-direction: row;    
+    margin: 0;
+    height: 50px;
+    & .menu {
+        display: flex;
+        align-content: space-between;
+        align-items: center;
+        flex-direction: row-reverse;
+    }    
+    & .menu div {
+        text-align: right;                
+        & ul {        
+            list-style: none;
+            display: block;
+            margin: auto;            
+            & li {
+                float: left;
+                padding: 12.5px 20px;                                  
+                text-align: center;
+                display: block;
+                & a {
+                    text-decoration: none;
+                    color: var(--text-color3);
+                    font-weight: bold;
+                    font-size: 1em;                    
+                    font-family: Raleway, sans-serif;                    
+                    }            
+                }            
+            & li:hover {
+                background: var(--easy-color);  
+                padding: 10px 20px;
+                border-bottom: 5px solid var(--text-color2);                                                  
+                transition: 300ms;
+                & a {
+                    color: var(--text-color1);
+                    transition: 300ms;
+                }
+            }
+        }
+        & span:first-child {
+            color: white;
+            font-size: 16px;    
+            margin: 18px auto;
+            display: none;
+        }
+    }
+}
+
+#logoSiceli {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    color: var(--text-color2);
+    margin-left: 10px;
+    padding: 5px 0;
+    height: 50px;    
+}
+
+@media screen and (max-width: 768px ) {    
+    nav.row .menu div {
+        & ul {
+            flex-direction: column;
+            width: 140px;
+            background: var(--text-color1);
+            padding: 0;
+            margin-top: 0px;
+            right: 15px;
+            position: absolute;
+            display: none;
+            z-index: 100;
+        }        
+        & span:first-child {
+            display: inline-block;
+            font-size: 24px;
+            margin: 0px;
+            padding: 5px;                
+            &:hover {
+                background: var(--text-color2);                
+            }
+        }
+        &:hover ul {
+            display: block;
+            & li {
+                transition: none;
+                font-size: 12px;
+                text-align: center;
+                width: 100%;
+                padding: 10px 20px;
+                border-bottom: 5px solid var(--text-color2);                 
+                &:hover {
+                    border-bottom: 5px solid var(--text-color2);                     
+                   
+                }                
+            }
+        }
+    }
+}
+
+/** CAROUSEL */
+
+.carousel-item {
+    max-height: 400px;
+}
+
+@media screen and (max-width: 768px ) {
+    #carr {
+        display: none;
+    }
+}
+
+/** SCHOOL SECTION */
+
+.wrap {
+    display: block;
+    background: var(--bgd-color);
+    width: calc(100vw-30px);
+    min-height: 500px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 5px 1px;
+    & div.logo-school  {
+        display: block;
+        margin: auto;
+        padding-top: 40px;        
+        max-width: 300px;
+        & img {
+            display: block;
+            width: 100%;
+        }
+    }
+    & h1 {        
+        text-align: center;
+        font-family: Oswald, sans-serif;
+        font-size: 2em;
+    }
+}
+
+/** NEWS SECTION */
+
+#news-section h2 {
+    padding: 20px 0;
+    font-family: Oswald, sans-serif;
+}
+
+#news-section .wrap.row {
+    align-content: last baseline;
+}
+.single-card {
+    display: flex;
+    background: var(--easy-color);    
+    margin: 20px auto;    
+    max-width: calc(33.33% - 16px);
+    min-width: 200px;
+    flex-direction: column;    
+    align-content: center;
+    border-radius: 5px;
+    min-height: 500px;
+    & a img {
+        border-radius: 5px 5px 0px 0px;
+        width: 100%;        
+        height: 200px;
+        margin-bottom: 10px;
+        opacity: 0.6;        
+    }
+    & h3  {
+        padding: 0 10px;
+        text-align: center;               
+    }
+    & p {
+        padding: 0 10px;
+        text-align: left;
+        & span:first-child {
+            font-style: italic;
+        }
+    }
+}
+.single-card:hover {
+    box-shadow: 0px 0px 5px 1px;
+}
+.single-card:hover a img {
+    opacity: 1;
+}
+
+
+@media screen and (max-width: 768px) {
+    .single-card {
+        min-width: calc(50% - 16px);
+        min-height: 350px;
+    }       
+}
+@media screen and (max-width: 470px) {
+    .single-card {
+        min-width: calc(100% - 16px);
+        min-height: 300px;
+    }       
+}
+
+/** FOOTER */
+
+footer {
+    width: 100%;    
+    height: calc(300px-64px);
+    background: var(--text-color1);
+    display: flex;
+    flex-direction: column;
+}
+
+.foo {
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;    
+}
+.foo-wrap {
+    width: 30%;
+    margin: auto;
+    height: 100%;
+}
+.foo-wrap a {
+    text-decoration: none;
+    color: var(--text-color2)
+}
+
+.foo-wrap h4 {
+    padding: 20px;
+    color: var(--text-color3);
+    font-family: Oswald, sans-serif;
+}
+.foo-wrap span {
+    visibility: hidden;
+}
+
+.foo-wrap a:hover span {
+    visibility: visible;
+    transition: 300ms;
+    color: var(--text-color3);    
+}
+.foo-wrap a:hover p {
+    color: var(--text-color3);    
+}
+
+
+
+.foo-credits {
+    display: block;    
+    background: black;   
+}
+
+.foo-credits p {    
+    color: var(--text-color2);
+    text-align: center;
+    padding: 20px 0;  
+    margin: 0;
+}
+
+.fa-fist-raised:hover {
+    color: var(--easy-color);
+}
+
+.fa-heart:hover {
+    color: red;
+}
