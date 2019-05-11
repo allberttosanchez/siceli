@@ -2,7 +2,6 @@
 /pruebas_php
 /node_modules
 /dist
-/dist/_wordpress
 package.json
 package-lock.json
 postcss.config.js
