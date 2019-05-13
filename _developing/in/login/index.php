@@ -1,12 +1,14 @@
 <?php
     require_once './../functions.php';
-    require_once './../conexion.php';
+    require_once './../class.php';
 
+    # verifica si se envio un formulario por el metodo post.
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['user']) && isset($_POST['pass'])) {
             $user = limpiarDatos($_POST['user']);
             $pass = limpiarDatos($_POST['pass']);
-        
+            
+            # validacion de usuario.
             if ( (!isset($user)) || ($user == "") || ($user == null) || (strlen($user) < 4) ||
                 (!isset($pass)) || ($pass == "") || ($pass == null) || (strlen($pass) < 4)  ) {
                     
@@ -14,11 +16,17 @@
                     
                 } else {
                     
-                    if(!isset($conn)) {
+                    # se conecta a la base de datos.
+                    $conn = new conexion(4,'u'); # ver class.php - conexion
+                    # 4 = usuario:reader, u = basedatos:usuarios 
+                    
+                    $conn = $conn->conexion();
+
+                    if( !isset($conn) ) {
                         echo "<script>alert('NO HAY CONEXION')</script>";
                     } else {
-
-                        $statement = $conn->prepare("SELECT * FROM scl_userslogin WHERE usersName = :user ");                    
+                        $sql = "SELECT * FROM scl_userslogin WHERE usersName = :user ";
+                        $statement = $conn->prepare($sql);                    
                         $statement->execute(array(':user' => $user));
                         $resultado = $statement->fetchAll();
                         
