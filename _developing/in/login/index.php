@@ -16,8 +16,8 @@
                     
                 } else {
                     
-                    # se conecta a la base de datos.
-                    $conn = new conexion(4,'u'); # ver class.php - conexion
+                    # se conecta a la base de datos mediante patron Singleton.
+                    $conn = Conexion::singleton(4,'u'); # (ver class.php - conexion)
                     # 4 = usuario:reader, u = basedatos:usuarios 
                     
                     $conn = $conn->conexion();
