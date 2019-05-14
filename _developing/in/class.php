@@ -30,7 +30,7 @@ class Conexion {
         'password' => 'SICELI%2019!DBA'            
     );
     # Contiene los nombres de las bases de datos.
-    private $nombrebd = array(
+    protected $nombrebd = array(
         'usuarios' => 'siceli_usersdb',
         'asignaturas' => 'siceli_asignaturas',
         'sesiones' => 'siceli_sesionesdb',
@@ -38,9 +38,7 @@ class Conexion {
     );
     
     # método singleton
-    public static function singleton($e,$i) {
-        self::$e = $e;
-        self::$i = $i;
+    public static function singletonConexion() {       
         
         if (!isset(self::$instancia)) {
             $miclase = __CLASS__; # __CLASS__ devuelve el nombre de esta clase.
@@ -52,8 +50,10 @@ class Conexion {
     }
 
     # invoca la conexion.
-    public function conexion() {                
-        
+    public function conn($e,$i) {                
+        self::$e = $e;
+        self::$i = $i;
+
         switch (self::$e) {
             case 1: # root
                 $usuario = $this->dba['usuario'];
@@ -105,6 +105,85 @@ class Conexion {
 
 }
 
-class Persona {
+class Persona {    
+    private static $instancia;        
+    private static $idPersona;
+    private static $userName;
+    
+     # método singleton
+     public static function singletonPersona(){        
+        
+        if (!isset(self::$instancia)) {
+            $miclase = __CLASS__; # __CLASS__ devuelve el nombre de esta clase.
+            self::$instancia = new $miclase;
+        } 
+
+        return self::$instancia;
+
+    }
+
+    public function login($privilegios,$basedatos,$user,$pass) {
+        
+        # validacion de usuario.
+        if ( (!isset($user)) || ($user == "") || ($user == null) || (strlen($user) < 4) ||
+        (!isset($pass)) || ($pass == "") || ($pass == null) || (strlen($pass) < 4)  ) {
+            
+            echo "<script>alert('Usuario o contraseña Incorrectos.')</script>";
+            
+        } else {
+
+            # se conecta a la base de datos mediante patron Singleton.
+            $conn = Conexion::singletonConexion();
+
+            $conn = $conn->conn($privilegios,$basedatos); # (ver class.php - conexion)
+            
+            if( !isset($conn) ) {
+                echo "<script>alert('NO HAY CONEXION')</script>";
+            } else {
+                
+                $sql = "SELECT * FROM scl_userslogin WHERE usersName = :user ";
+                
+                $statement = $conn->prepare($sql);                    
+                # atrapa el usuario de la base de datos.
+                $statement->execute(array(':user' => $user));
+                $resultado = $statement->fetchAll();
+                            
+                foreach ($resultado as $fila) {
+                    # atrapa el password de la base de datos.
+                    self::$idPersona = $fila['idPersona'];
+                    self::$userName = $fila['usersName'];
+                    $fetchPassword = $fila['usersPassword'];
+                } 
+                            
+                # Verificamos si se obtuvo el password de la base de datos.
+                if (isset($fetchPassword)) {
+                    # Verificamos si el password introducido coincide.
+                    if ($fetchPassword == $pass) {
+                        # Si los datos coinciden devuelve true.
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }   
+                            
+            }
+
+        }           
+    }  
+ 
+    public function datos(){
+        return $datos = array ('idPersona' => self::$idPersona,'userName' => self::$userName);
+    }
+
+    public function nuevaPersona() {
+
+    }
+
+    # Evita que el objeto se pueda clonar
+    public function __clone() {
+        trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR);
+    }
 
 }
