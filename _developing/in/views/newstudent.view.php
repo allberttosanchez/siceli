@@ -4,21 +4,12 @@
         <title>SICELI | Registro de Estudiante</title>
     </head>
     <body>
-        <header class="col-12">
-            <div class="row nav">
-                <div class="col-md-4 logo">
-                    <a href="dashboard.php">
-                        <img src="./../image/logoSiceli.png" alt="Siceli Logo" title="Sistema de Control Estudiantil Libre">
-                    </a>
-                </div>
-                <div class="col-md-8 title">              
-                    <h2>Registro de Nuevo Estudiante</h2>              
-                </div>
-            </div>
-        </header>        
-    <body>
-        <h2 class="form-title">Formulario de Registro</h2>
-        <form action="studentlist.php" class="row col-12 form-newstudent" method="get">                
+        
+        <?php   include 'header.view.php'; ?>                     
+        
+        <main>            
+            <h2 class="form-title">Formulario de Registro</h2>
+            <form action="studentlist.php" class="row col-12 form-newstudent" method="get">                
                 <label class="label-form name" for="name">Nombre Completo</br>
                     <input type="text" name="name" id="name" class="form-std-input name">
                 </label>

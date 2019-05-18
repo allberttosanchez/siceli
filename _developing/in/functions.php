@@ -19,3 +19,13 @@ function errorLogin(){
 
 	return $errorMsj; 
 }
+
+
+function verificarSesion() {
+	session_start();
+	# verifica si la sesion esta identificada.
+	if(!$_SESSION['identificar']) {
+		# ver index.php de la raiz principal.
+		header('Location: ./../?login');
+	 }	
+}

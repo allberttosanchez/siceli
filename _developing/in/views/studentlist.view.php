@@ -3,19 +3,10 @@
 ?>
         <title>UNPHU | Lista</title>
     </head>
-    <header class="col-12 header-list">
-        <div class="row nav">
-            <div class="col-md-4 logo">
-                <a href="dashboard.php">
-                    <img src="./../image/logoSiceli.png" alt="SICELI Logo" title="Sistema de Control Estudiantil Libre">
-                </a>
-            </div>
-            <div class="col-md-8 title">              
-                <h2>Lista de Estudiantes</h2>              
-            </div>
-        </div>
-    </header>
     <body class="body-list">
+        
+        <?php   include 'header.view.php'; ?>
+        
         <main class="main-list">
             <table class="student-table">
                 <thead>

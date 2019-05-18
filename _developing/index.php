@@ -31,7 +31,7 @@
                     <li><a href="#">Historia</a></li>
                     <li><a href="#">Noticias</a></li>
                     <li><a href="#">Contacto</a></li>
-                    <li><a href="./in/login">Login</a></li>
+                    <li><a href="./in/?login">Login</a></li>
                 </ul>
             </div>
         </div>

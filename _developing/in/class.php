@@ -173,8 +173,8 @@ class Persona {
         }           
     }  
  
-    public function datos(){
-        return $datos = array ('idPersona' => self::$idPersona,'userName' => self::$userName);
+    public function identificar(){
+        return $identify = array ('idPersona' => self::$idPersona,'userName' => self::$userName);
     }
 
     public function nuevaPersona() {
