@@ -41,21 +41,21 @@ INSERT INTO ctg_anno_escolar (annoInicio,annoTermino) VALUES
 # Esta tabla es un catalogo que contiene las modalidades educativas: general, prepara, extendida.
 CREATE TABLE IF NOT EXISTS ctg_modalidad_escolar(
 	id int not null auto_increment,    
-    nombre varchar(30) default null,    
+    modalidadEscolar varchar(30) default null,    
     primary key(id)
 ) engine InnoDB;
 
-insert into ctg_modalidad_escolar (nombre) values
+insert into ctg_modalidad_escolar (modalidadEscolar) values
 ('General'),('Jornada Extendida'),('PREPARA'),('Otra');
 
 # Esta tabla es un catalogo que contiene las tandas educativas matutina, verpetina, nocturna, sabatina, dominical.
 CREATE TABLE IF NOT EXISTS ctg_tanda_escolar(
 	id int not null auto_increment,    
-    nombre varchar(30) default null,    
+    tandaEscolar varchar(30) default null,    
     primary key(id)
 ) engine InnoDB;
 
-insert into ctg_tanda_escolar (nombre) values
+insert into ctg_tanda_escolar (tandaEscolar) values
 ('Matutina'),('Verpestina'),('Nocturna'),('Sabatina'),('Dominical');
 
 # Esta tabla contiene un catalogo de los grados impartidos en el centro educativo.
@@ -74,21 +74,21 @@ insert into ctg_grados (iso,nombre) values
 # Esta tabla contienue un catalogo con los sectores escolares: privado y semi-privado.
 CREATE TABLE IF NOT EXISTS ctg_sector_escolar(
 	id int not null auto_increment,
-    nombre varchar(20),
+    sectorEscolar varchar(20),
     primary key(id)
 ) engine InnoDB;
 
-INSERT INTO ctg_sector_escolar (nombre) values
+INSERT INTO ctg_sector_escolar (sectorEscolar) values
 ('PUBLICO'),('SEMI-PRIVADO');
 
 # Esta tabla contienue un catalogo con los zonas escolares: rural y urbana.
 CREATE TABLE IF NOT EXISTS ctg_zona_escolar(
 	id int not null auto_increment,
-    nombre varchar(20),
+    zonaEscolar varchar(20),
     primary key(id)
 ) engine InnoDB;
 
-INSERT INTO ctg_zona_escolar (nombre) values
+INSERT INTO ctg_zona_escolar (zonaEscolar) values
 ('RURAL'),('URBANA');
 
 # Esta tabla contiene un catalogo con las secciones fisicas de centro educativo.
@@ -211,8 +211,8 @@ CREATE TABLE IF NOT EXISTS ses_descripcion_centro(
 	id int not null auto_increment,    
     nombreCentroEscolar varchar(100) default null,
     codigoCentroEscolar int(11) default null, #fk    
-    IdModalidadEscolar int not null, #fk
-    IdTandaEscolar int not null, #fk
+    idModalidadEscolar int not null, #fk
+    idTandaEscolar int not null, #fk
     idSector int not null, #fk
     idZona int not null, #fk
     direccion varchar(100) default null,

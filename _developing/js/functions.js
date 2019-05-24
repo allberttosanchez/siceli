@@ -31,3 +31,29 @@ window.addEventListener("load", function(){
     
 });
 
+// Funcion AJAX
+function cargarDatos(lugar) {
+    // Verifica si el navegador soporta objetos XMLHttpRequest    
+    if (window.XMLHttpRequest) {
+        // code for modern browsers
+        var xhttp = new XMLHttpRequest();
+     } else {
+        // code for old IE browsers
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+        
+    if (lugar == 'escuela') {
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Carga los datos obtenidos del index.php en el elemento con el id=set-wrap
+                document.getElementById("set-wrap").innerHTML = this.responseText;                
+            }
+        };
+        xhttp.open("POST","./index.php", true);
+        xhttp.send();
+
+    }
+
+}
+

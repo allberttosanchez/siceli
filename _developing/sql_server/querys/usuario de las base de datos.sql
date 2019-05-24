@@ -1,7 +1,7 @@
 # usuarios y privilegios de las bases de datos.
 
 # usuario : root
-# password : SICELI%2019!DBA
+# password : SICELI%2019!DBAses_descripcion_centro
 # Privilegios : TODOS
 
 # usuario : reader

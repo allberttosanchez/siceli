@@ -106,6 +106,12 @@ CREATE TABLE IF NOT EXISTS ctg_roles(
 	primary key(id)
 ) engine InnoDB;
 
+INSERT INTO ctg_roles (id,rol) VALUES
+(1,'ADB'),
+(2,'ADMIN'),
+(3,'OPERATOR'),
+(4,'READER');
+
 -- TABLA ctg_tipodni en ella se aloja un catalogo con los tipos de numero unico de identidad: cedula o pasaporte.
 -- utilizar query catalogo_tipodni.sql para rellenar los valores.
 CREATE TABLE IF NOT EXISTS ctg_tipoDNI(
@@ -121,6 +127,13 @@ create table if not exists ctg_estado_rol(
     estado varchar(30) not null,
     primary key(id)    
 ) engine InnoDB;
+
+INSERT INTO ctg_estado_rol (id,estado) VALUES
+(1,'ACTIVO'),
+(2,'INACTIVO'),
+(3,'SUSPENDIDO'),
+(4,'BLOQUEADO');
+
 
 -- TABLA ctg_sexo en ella se aloja un catalogo de tipos de sexo biologico.
 -- utilizar query catalogo_sexo_genero.sql para rellenar los valores.
