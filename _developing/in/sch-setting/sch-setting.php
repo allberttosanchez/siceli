@@ -12,33 +12,37 @@
     # devuelve un array con los datos de la escuela.
     $arrayEscuela = $escuela->identificar($idRol);
     //print_r($arrayEscuela);
-    
-    if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {         
-        
-        /* $codigoCentroEscolar = ( isset($_GET['codigoCentroEscolar']) ) ? limpiarDatos($_GET['codigoCentroEscolar']):"";
-        $nombreCentroEscolar = (isset($_GET['nombreCentroEscolar'])) ? limpiarDatos($_GET['nombreCentroEscolar']):"";
-        $modalidadEscolar = (isset($_GET['modalidadEscolar'])) ? limpiarDatos($_GET['modalidadEscolar']):"";
-        $tandaEscolar = (isset($_GET['tandaEscolar'])) ? limpiarDatos($_GET['tandaEscolar']):"";
-        $direccion = (isset($_GET['direccion'])) ? limpiarDatos($_GET['direccion']):"";
-        $sector = (isset($_GET['sector'])) ? limpiarDatos($_GET['sector']):"";
-        $zona = (isset($_GET['zona'])) ? limpiarDatos($_GET['zona']):"";
-        $telefono = (isset($_GET['telefono'])) ? limpiarDatos($_GET['telefono']):""; */
-
+                    
         $datosEscuela = array(
-            'codigoCentroEscolar' => ( isset($_GET['codigoCentroEscolar']) ) ? limpiarDatos($_GET['codigoCentroEscolar']):"",
-            'nombreCentroEscolar' => (isset($_GET['nombreCentroEscolar'])) ? limpiarDatos($_GET['nombreCentroEscolar']):"",
-            'modalidadEscolar' => (isset($_GET['modalidadEscolar'])) ? limpiarDatos($_GET['modalidadEscolar']):"",
-            'tandaEscolar' => (isset($_GET['tandaEscolar'])) ? limpiarDatos($_GET['tandaEscolar']):"",
-            'direccion' => (isset($_GET['direccion'])) ? limpiarDatos($_GET['direccion']):"",
-            'sector' => (isset($_GET['sector'])) ? limpiarDatos($_GET['sector']):"",
-            'zona' => (isset($_GET['zona'])) ? limpiarDatos($_GET['zona']):"",
-            'telefono' => (isset($_GET['telefono'])) ? limpiarDatos($_GET['telefono']):""
+            'codigoCentroEscolar' => ( isset($_GET['codigoCentroEscolar']) ) ? limpiarDatos($_GET['codigoCentroEscolar']):null,
+            'nombreCentroEscolar' => (isset($_GET['nombreCentroEscolar'])) ? limpiarDatos($_GET['nombreCentroEscolar']):null,
+            'modalidadEscolar' => (isset($_GET['modalidadEscolar'])) ? limpiarDatos($_GET['modalidadEscolar']):null,
+            'tandaEscolar' => (isset($_GET['tandaEscolar'])) ? limpiarDatos($_GET['tandaEscolar']):null,
+            'direccion' => (isset($_GET['direccion'])) ? limpiarDatos($_GET['direccion']):null,
+            'sector' => (isset($_GET['sector'])) ? limpiarDatos($_GET['sector']):null,
+            'zona' => (isset($_GET['zona'])) ? limpiarDatos($_GET['zona']):null,
+            'telefono' => (isset($_GET['telefono'])) ? limpiarDatos($_GET['telefono']):null
         );
         //print_r($datosEscuela);
+    
+    if ( ($_SERVER['REQUEST_METHOD'] == 'GET') and isset($datosEscuela['nombreCentroEscolar']) ) {         
         
-        //$escuela->actualizarDatos($datosEscuela);
-
-    }
+        if ( strlen($datosEscuela['nombreCentroEscolar']) > 5 ) {
+            
+            $escuela->actualizarDatos($datosEscuela);
+            //header('Location: ./');
+            
+        } else {
+            echo "<script>
+            
+                window.addEventListener('load', function(){ 
+                    alert('Introduzca el nombre del Centro Educativo'); 
+                });
+            
+            </script>";     
+        }
+        
+    } 
     
     if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         # devuelve la informacion mediante AJAX - ver functions.js -> cargarDatos()

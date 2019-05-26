@@ -36,7 +36,7 @@ class Conexion {
         'sesiones' => 'siceli_sesionesdb',
         'records' => 'siceli_record_db'  
     );
-    
+# ----------------------------------------------------   
     # método singleton
     public static function singletonConexion() {       
         
@@ -48,7 +48,7 @@ class Conexion {
         return self::$instancia;
 
     }
-
+# ----------------------------------------------------
     # invoca la conexion.
     public function conn($e,$i) {                
         self::$e = $e;
@@ -92,7 +92,7 @@ class Conexion {
         }
         
     }
-
+# --------------------------------------------------
     # Evita que el objeto se pueda clonar
     public function __clone() {
         trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR);
@@ -104,7 +104,8 @@ class Conexion {
 
 
 }
-
+#--------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
 class Persona {    
     private static $instancia;        
     private static $idPersona;
@@ -125,7 +126,7 @@ class Persona {
         return self::$instancia;
 
     }
-
+# -------------------------------------------------------
     public function login($privilegios,$basedatos,$user,$pass) {
         self::$privilegios = $privilegios;
         self::$basedatos = $basedatos;
@@ -178,7 +179,7 @@ class Persona {
 
         }           
     }  
-    # --------------------------------------------------------------------------
+# -------------------------------------------------------
     public function rol($idPersona) {        
                 
         $conn = Conexion::singletonConexion(); 
@@ -197,34 +198,37 @@ class Persona {
             $resultado = $statement->fetchAll();
                         
             foreach ($resultado as $fila) {
-                # atrapa el password de la base de datos.
+                
                 self::$idRol = $fila['idRol'];
                 self::$estado = $fila['estado'];                
             } 
-
+            
+            # Devuelve un array con id y estado de la entidad roles personas.
             return  $roles = array ('idRol' => self::$idRol,'estado' => self::$estado);
         }
     }
-
+# --------------------------------------------------------
     public function identificar(){
         return $identify = array ('idPersona' => self::$idPersona,'userName' => self::$userName);
     }
-
+# --------------------------------------------------------
     public function nuevaPersona() {
 
     }
-
+# --------------------------------------------------------
     # Evita que el objeto se pueda clonar
     public function __clone() {
         trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR);
     }
 
 }
-
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 class Escuela {
     public static $instancia;
     public static $idRol;
-
+# --------------------------------------------------
+    # Devuelve un array con los datos de la escuela.
     public function identificar($idRol){
             self::$idRol = (int)$idRol;
 
@@ -267,7 +271,7 @@ class Escuela {
                     $resultado = $statement->fetchAll();
                     
                     //print_r($resultado);                    
-                    # devuelve el array con los valores encontrados.
+                    # devuelve el array con los valores encontrados de la escuela.
                     return $resultado;                               
                 
                 }
@@ -278,7 +282,38 @@ class Escuela {
         }
 
     }
+# --------------------------------------------------
 
+    public function actualizarDatos($arrayDeDatos) {
+
+        $conn = Conexion::singletonConexion();
+        $conn = $conn->conn(2,'s');
+        
+        if( !isset($conn) ) {
+            echo "<script>alert('NO HAY CONEXION en escuela')</script>";
+        } else {
+            //echo "<script>alert('la conexion se mantiene en actualizardatos'); </script>";     
+                        
+            # implode convierte el array en una cadena separada por el simbolo elegido.
+            $cadenaDeDatos = implode( "$", $arrayDeDatos );
+            echo $cadenaDeDatos;
+
+            $sql = "CALL actualizarDatos(1,$cadenaDeDatos)";
+            $statement = $conn->prepare($sql);
+            $statement->execute();
+           /*  $statement->execute(array(                
+                ':nombreCentroEscolar' => $arrayDeDatos['nombreCentroEscolar'],
+                ':codigoCentroEscolar' => $arrayDeDatos['codigoCentroEscolar'],
+                ':idModalidadEscolar' => $arrayDeDatos['idModalidadEscolar'], # numero de ctg
+                ':idTandaEscolar' => $arrayDeDatos['idTandaEscolar'], # numero de ctg
+                ':idSector' => $arrayDeDatos['idSector'], # numero de ctg
+                ':idZona' => $arrayDeDatos['idZona'], # numero de ctg
+                ':direccion' => $arrayDeDatos['direccion'],
+                ':telefono' => $arrayDeDatos['telefono']                
+            )); */
+        }
+    }
+# --------------------------------------------------
     # método singleton
     public static function singletonEscuela() {       
             
@@ -290,7 +325,7 @@ class Escuela {
         return self::$instancia;
 
     }
-
+# --------------------------------------------------
     # Evita que el objeto se pueda clonar
     public function __clone() {
         trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR);
