@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS ses_descripcion_centro(
     idZona int not null, #fk
     direccion varchar(100) default null,
     telefono varchar(30) default null,
-    fechaApertura timestamp default null,    
+    fechaApertura date default null,    
     primary key(id),
         
     constraint descripcion_modalidad

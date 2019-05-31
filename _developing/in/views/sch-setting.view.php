@@ -37,6 +37,7 @@
                                 <input id='zona' name='zona' type='text' value='' class=''>
                                 <label for='telefono'>Telefono</label>
                                 <input id='telefono' name='telefono' type='text' value='' class=''>
+                                <input id='fecha' name='fecha' type='date' value='' class=''>
                                 <button type='submit' class='btn btn-primary' id='up-form-btn'>Actualizar</button>
                             </form> -->
                         </div>
@@ -46,32 +47,50 @@
             <aside class="aside col-md-4">
                 <h2>MENU</h2>                
                 <a href="newstudent.php"><i class="fas fa-user-plus"></i>Iniciar Año Escolar</a><br>
-                <a id="set-edit-btn" href="#"><i class="fas fa-list-ol"></i>Editar Datos del Centro</a><br>                
+                <div>
+                    <div id="btn" class="">
+                        <a id="set-edit-btn" onclick="editarFormulario(this)" href="#"><i class="fas fa-list-ol"></i>Editar Datos</a>
+                    </div>
+                    <div id="btn2" class="ocultar">                
+                        <a id="set-edit-btn" onclick="editarFormulario(this)" href="#"><i class="fas fa-list-ol"></i>Cancelar Edición</a>
+                    </div>
+                </div>
             </aside>
         </main>
     </body>
 
     <script type="text/javascript">
         
-        var char = document.getElementById("set-edit-btn");
+        //var char = document.getElementById("set-edit-btn");
         
         var i = 1;            
-        char.addEventListener("click", function(event){            
             
-            var wlc = document.getElementById("wlc-wrap");
-            wlc.classList.toggle("ocultar");           
-            
-            var set = document.getElementById("set-wrap");
-            set.classList.toggle("ocultar");                
-            
-            event.preventDefault();
-                        
-            if ( i < 2 ) {
-                cargarDatos('escuela');
-                i++;
-            }
+            ele.addEventListener("click", function(event){            
 
-        });
+                event.preventDefault();
+            })
+
+          function editarFormulario(ele){  
+
+                var wlc = document.getElementById("wlc-wrap");
+                wlc.classList.toggle("ocultar");           
+                
+                var set = document.getElementById("set-wrap");
+                set.classList.toggle("ocultar");                
+                
+                var btn = document.getElementById("btn");
+                btn.classList.toggle("ocultar");           
+
+                var btn2 = document.getElementById("btn2");
+                btn2.classList.toggle("ocultar");              
+
+                            
+                if ( i < 2 ) {
+                    cargarDatos('escuela');
+                    i++;
+                }
+
+        }
     </script>
 
     

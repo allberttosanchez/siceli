@@ -227,6 +227,56 @@ class Persona {
 class Escuela {
     public static $instancia;
     public static $idRol;
+
+# --------------------------------------------------
+
+    public function categoria($nombreCategoria){
+
+        # se conecta a la base de datos mediante patron Singleton.
+        $conn = Conexion::singletonConexion();
+
+        # conexion de reader (4), base datos sesiones "s"
+        $conn = $conn->conn(4,"s"); # (ver class.php - conexion)
+
+        if( !isset($conn) ) {
+            echo "<script>alert('NO HAY CONEXION en categoria escuela')</script>";
+        } else {
+            //echo "<script>alert('la conexion se mantiene en categoria escuela'); </script>";
+            
+            # Este array contiene los valores esperados.
+            $arrayCategoriasBaseDatosSesiones = array(
+                'ctg_anno_escolar',
+                'ctg_duracion_sesion_clase',
+                'ctg_grados',
+                'ctg_horario_diario_sesion',
+                'ctg_modalidad_escolar',
+                'ctg_periodo_escolar',
+                'ctg_periodo_semanal_sesion', 
+                'ctg_periodo_sesiones',
+                'ctg_seccion_escolar',
+                'ctg_tanda_escolar',
+                'ctg_sector_escolar',                
+                'ctg_zona_escolar' 
+            );
+                # count() cuenta la posiciones utilizadas de un array (solo primer nivel).
+                # count(array,COUNT_RECURSIVE) cuenta la posiciones utilizadas de un array (todos los niveles).
+                $sql = "SELECT * FROM $nombreCategoria";
+                $statement = $conn->prepare($sql);                    
+
+            for ($i=0; $i < count($arrayCategoriasBaseDatosSesiones) ; $i++) { 
+                    
+                if ( $arrayCategoriasBaseDatosSesiones[$i] == $nombreCategoria ) {
+                    $statement->execute();
+                    # atrapa los datos de la base de datos en un array llamado resultado.
+                    $resultado = $statement->fetchAll();  
+                    # devuelve un arraydimensional debe ser recorrido con foreach.                  
+                    return $resultado;
+                } 
+            }
+
+            
+        }
+    }
 # --------------------------------------------------
     # Devuelve un array con los datos de la escuela.
     public function identificar($idRol){
@@ -235,7 +285,10 @@ class Escuela {
         # se conecta a la base de datos mediante patron Singleton.
         $conn = Conexion::singletonConexion();
         
-        if( !isset($conn) ) {
+        # conexion de reader (4), base datos sesiones "s"
+        $conn4 = $conn->conn(4,"s"); # (ver class.php - conexion)
+
+        if( !isset($conn4) ) {
             echo "<script>alert('NO HAY CONEXION en escuela')</script>";
         } else {
             //echo "<script>alert('la conexion se mantiene en escuela'); </script>";
@@ -262,7 +315,7 @@ class Escuela {
                             JOIN ctg_modalidad_escolar AS me ON dc.IdModalidadEscolar = me.id
                             JOIN ctg_tanda_escolar AS te ON dc.idTandaEscolar = te.id
                             JOIN ctg_sector_escolar AS se ON dc.idSector = se.id
-                            JOIN ctg_zona_escolar AS ze ON dc.idSector = ze.id
+                            JOIN ctg_zona_escolar AS ze ON dc.idZona = ze.id
                             ORDER BY dc.id DESC LIMIT 1";
                         
                     $statement = $conn->prepare($sql);                    
@@ -284,7 +337,7 @@ class Escuela {
     }
 # --------------------------------------------------
 
-    public function actualizarDatos($arrayDeDatos) {
+    public function actualizarDatos($idEscuela,$arrayDeDatos) {
 
         $conn = Conexion::singletonConexion();
         $conn = $conn->conn(2,'s');
@@ -295,22 +348,26 @@ class Escuela {
             //echo "<script>alert('la conexion se mantiene en actualizardatos'); </script>";     
                         
             # implode convierte el array en una cadena separada por el simbolo elegido.
-            $cadenaDeDatos = implode( "$", $arrayDeDatos );
+            $cadenaDeDatos = implode( "||", $arrayDeDatos );
             echo $cadenaDeDatos;
-
-            $sql = "CALL actualizarDatos(1,$cadenaDeDatos)";
-            $statement = $conn->prepare($sql);
+            echo "<script>alert('$cadenaDeDatos'); </script>"; 
+            # el procedure actulizarDatos recibre 3 parametros
+            # el primero un numero que identifica el tipodeDatos a actualizar
+            # el segundo el id de registro a actualizar
+            # el tercero la cadena con los datos.
+            # Ver procedure actulizarDatos() en base de datos sesiones.
+            
+            
+            $statement = $conn->prepare("CALL actualizarDatos(1,$idEscuela,'$cadenaDeDatos')");
             $statement->execute();
-           /*  $statement->execute(array(                
-                ':nombreCentroEscolar' => $arrayDeDatos['nombreCentroEscolar'],
-                ':codigoCentroEscolar' => $arrayDeDatos['codigoCentroEscolar'],
-                ':idModalidadEscolar' => $arrayDeDatos['idModalidadEscolar'], # numero de ctg
-                ':idTandaEscolar' => $arrayDeDatos['idTandaEscolar'], # numero de ctg
-                ':idSector' => $arrayDeDatos['idSector'], # numero de ctg
-                ':idZona' => $arrayDeDatos['idZona'], # numero de ctg
-                ':direccion' => $arrayDeDatos['direccion'],
-                ':telefono' => $arrayDeDatos['telefono']                
-            )); */
+            $resultado = $statement->fetchAll();
+
+            print_r($resultado);
+            if ($resultado) {
+                return true;                
+            } else {                
+                return false;
+            }
         }
     }
 # --------------------------------------------------

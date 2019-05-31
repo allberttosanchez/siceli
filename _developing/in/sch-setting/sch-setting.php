@@ -11,9 +11,11 @@
     
     # devuelve un array con los datos de la escuela.
     $arrayEscuela = $escuela->identificar($idRol);
-    //print_r($arrayEscuela);
-                    
-        $datosEscuela = array(
+    print_r($arrayEscuela[0]['idZona']);
+    # IdResultado guarda el id del registro de identificacion de la escuela.
+    $idEscuela = $arrayEscuela[0]['id'];
+
+        $nuevodatosEscuela = array(
             'codigoCentroEscolar' => ( isset($_GET['codigoCentroEscolar']) ) ? limpiarDatos($_GET['codigoCentroEscolar']):null,
             'nombreCentroEscolar' => (isset($_GET['nombreCentroEscolar'])) ? limpiarDatos($_GET['nombreCentroEscolar']):null,
             'modalidadEscolar' => (isset($_GET['modalidadEscolar'])) ? limpiarDatos($_GET['modalidadEscolar']):null,
@@ -21,17 +23,23 @@
             'direccion' => (isset($_GET['direccion'])) ? limpiarDatos($_GET['direccion']):null,
             'sector' => (isset($_GET['sector'])) ? limpiarDatos($_GET['sector']):null,
             'zona' => (isset($_GET['zona'])) ? limpiarDatos($_GET['zona']):null,
-            'telefono' => (isset($_GET['telefono'])) ? limpiarDatos($_GET['telefono']):null
+            'telefono' => (isset($_GET['telefono'])) ? limpiarDatos($_GET['telefono']):null,
+            'fechaApertura' => (isset($_GET['fechaApertura'])) ? limpiarDatos($_GET['fechaApertura']):null
         );
-        //print_r($datosEscuela);
+        //print_r($nuevodatosEscuela);
     
-    if ( ($_SERVER['REQUEST_METHOD'] == 'GET') and isset($datosEscuela['nombreCentroEscolar']) ) {         
+    if ( ($_SERVER['REQUEST_METHOD'] == 'GET') and isset($nuevodatosEscuela['nombreCentroEscolar']) ) {         
         
-        if ( strlen($datosEscuela['nombreCentroEscolar']) > 5 ) {
+        if ( strlen($nuevodatosEscuela['nombreCentroEscolar']) > 8 ) {
             
-            $escuela->actualizarDatos($datosEscuela);
-            //header('Location: ./');
+            $datosEnviados = $escuela->actualizarDatos($idEscuela,$nuevodatosEscuela);
             
+            if ($datosEnviados) {
+                //header('Location: ./');
+            } else {                
+                echo "<script>alert('NO SE COMPLETO LA OPERACION')</script>";
+            }
+
         } else {
             echo "<script>
             
@@ -46,51 +54,109 @@
     
     if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         # devuelve la informacion mediante AJAX - ver functions.js -> cargarDatos()
-        if(isset($arrayEscuela)) {
-        echo "<form action='' id='form-up-sch' method='get'>
-        <label for='codigoCentroEscolar'>Codigo del Centro</label>
-        <input id='codigoCentroEscolar' name='codigoCentroEscolar' type='text' value='".
-        
-                $arrayEscuela[0]['codigoCentroEscolar']
-                ."' class=''>
-                <label for='nombreCentroEscolar'>Nombre</label>
-                <input id='nombreCentroEscolar' name='nombreCentroEscolar' type='text' value='". 
-            
-                $arrayEscuela[0]['nombreCentroEscolar']
-                ."' class=''>
-                <label for='modalidadEscolar'>Modalidad</label>
-                <input id='modalidadEscolar' name='modalidadEscolar' type='text' value='". 
-                
-                $arrayEscuela[0]['modalidadEscolar']
-                ."' class=''>
-                <label for='tandaEscolar'>Tanda Escolar</label>
-                <input id='tandaEscolar' name='tandaEscolar' type='text' value='". 
-                
-                $arrayEscuela[0]['tandaEscolar']
-                ."' class=''>
-                <label for='direccion'>Dirección</label>
-                <input id='direccion' name='direccion' type='text' value='". 
-                
-                $arrayEscuela[0]['direccion']
-                ."' class=''>
-                <label for='sector'>Sector</label>
-                <input id='sector' name='sector' type='text' value='". 
-                
-                $arrayEscuela[0]['sectorEscolar']
-                ."' class=''>
-                <label for='zona'>Zona</label>
-                <input id='zona' name='zona' type='text' value='". 
-                
-                $arrayEscuela[0]['zonaEscolar']
-                ."' class=''>
-                <label for='telefono'>Telefono</label>
-                <input id='telefono' name='telefono' type='text' value='". 
-                
-                $arrayEscuela[0]['telefono']
-                ."' class=''>
-                <button type='submit' class='btn btn-primary' id='up-form-btn'>Actualizar</button>
-            </form>";
-    }
+
+        $modalidadEscolar = $escuela->categoria('ctg_modalidad_escolar');
+        //print_r($modalidadEscolar);        
+        $tandaEscolar = $escuela->categoria('ctg_tanda_escolar');
+        $sectorEscolar = $escuela->categoria('ctg_sector_escolar');
+        $zonaEscolar = $escuela->categoria('ctg_zona_escolar');
+        #------------------------------------------------------------------------------
+        echo "<form action='' id='form-up-sch' method='get'>";
+        #------------------------------------------------------------------------------
+            echo "<label for='codigoCentroEscolar'>Codigo del Centro</label>
+            <input id='codigoCentroEscolar' name='codigoCentroEscolar' type='text' value='";        
+            if(isset($arrayEscuela)) {
+                echo $arrayEscuela[0]['codigoCentroEscolar'];
+            }
+            echo "' class=''>";
+            #------------------------------------------------------------------------------
+            echo "<label for='nombreCentroEscolar'>Nombre</label>
+            <input id='nombreCentroEscolar' name='nombreCentroEscolar' type='text' value='";            
+            if(isset($arrayEscuela)) {
+                echo $arrayEscuela[0]['nombreCentroEscolar'];
+            }                
+            echo "' class=''>";
+            #------------------------------------------------------------------------------        
+            echo "<label for='modalidadEscolar'>Modalidad</label>
+            <select id='modalidadEscolar' name='modalidadEscolar'>";
+            echo "<option value=''>-</opcion>";
+            foreach ($modalidadEscolar as $categoria) {
+                echo "<option value='".$categoria['id']."'";                    
+                if (isset($arrayEscuela[0]['modalidadEscolar'])) {
+                        if ( $categoria['modalidadEscolar'] == $arrayEscuela[0]['modalidadEscolar'] ) {
+                            echo " selected";
+                        }
+                }
+                echo ">".$categoria['modalidadEscolar']."</option>";                                
+            }                                
+            echo "</select>";
+            #------------------------------------------------------------------------------
+            echo "<label for='tandaEscolar'>Tanda</label>
+            <select id='tandaEscolar' name='tandaEscolar'>";
+            echo "<option value=''>-</opcion>";
+            foreach ($tandaEscolar as $categoria) {
+                echo "<option value='".$categoria['id']."'";                    
+                if (isset($arrayEscuela[0]['tandaEscolar'])) {
+                    if ( $categoria['tandaEscolar'] == $arrayEscuela[0]['tandaEscolar'] ) {
+                        echo " selected";
+                    }
+                }
+                echo ">".$categoria['tandaEscolar']."</option>";                                
+            }                                
+            echo "</select>";
+            #------------------------------------------------------------------------------      
+            echo "<label for='direccion'>Dirección</label>
+            <input id='direccion' name='direccion' type='text' value='";                
+            if(isset($arrayEscuela)) {
+                echo $arrayEscuela[0]['direccion'];
+            } 
+            echo "' class=''>";
+            #------------------------------------------------------------------------------
+            echo "<label for='sector'>Sector</label>
+            <select id='sector' name='sector'>";
+            echo "<option value=''>-</opcion>";
+            foreach ($sectorEscolar as $categoria) {
+                echo "<option value='".$categoria['id']."'";                    
+                if ( isset($arrayEscuela[0]['sectorEscolar']) ) {
+                    if ( $categoria['sectorEscolar'] == $arrayEscuela[0]['sectorEscolar'] ) {
+                        echo " selected";
+                    }
+                }
+                echo ">".$categoria['sectorEscolar']."</option>";                                
+            }                                        
+            echo "</select>";
+            #------------------------------------------------------------------------------      
+            echo "<label for='zona'>Zona</label>
+            <select id='zona' name='zona'>";
+            echo "<option value=''>-</opcion>";
+            foreach ($zonaEscolar as $categoria) {                    
+                echo "<option value='".$categoria['id']."'";                    
+                if ( isset($arrayEscuela[0]['zonaEscolar']) ) {
+                    if ( $categoria['zonaEscolar'] == $arrayEscuela[0]['zonaEscolar'] ) {
+                        echo " selected";
+                    }
+                }
+                echo ">".$categoria['zonaEscolar']."</option>";                                
+            }                                        
+            echo "</select>";
+            #------------------------------------------------------------------------------
+            echo "<label for='telefono'>Telefono</label>
+            <input id='telefono' name='telefono' type='text' value='";
+            if(isset($arrayEscuela)) {  
+                echo $arrayEscuela[0]['telefono'];
+            }    
+            echo "' class=''>";
+            #------------------------------------------------------------------------------
+            echo "<label for='fechaApertura'>Fecha Apertura</label>
+            <input id='fechaApertura' name='fechaApertura' type='date' value='";
+            if(isset($arrayEscuela)) {  
+                echo $arrayEscuela[0]['fechaApertura'];
+            }    
+            echo "' class=''>";
+        #------------------------------------------------------------------------------
+        echo "<button type='submit' class='btn btn-primary' id='up-form-btn'>Actualizar</button>
+        </form>";
+        #------------------------------------------------------------------------------
     } else {
         include './../views/sch-setting.view.php';        
     }
