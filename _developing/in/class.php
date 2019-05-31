@@ -300,7 +300,7 @@ class Escuela {
             
             // echo "<script>alert('".$arrayRoles["idRol"]."');</script>";    
             if ( ( (int)$arrayRoles['idRol'] > 2 ) && ( (int)$arrayRoles['estado'] != 1 ) ) {
-                echo "<script>alert('No tiene suficiente permisos'); </script>";
+                //echo "<script>alert('No tiene suficiente permisos'); </script>";
             } else {
                 
                 //print_r($arrayRoles);
@@ -312,10 +312,6 @@ class Escuela {
                 } else {
 
                     $sql = "SELECT * FROM ses_descripcion_centro AS dc
-                            JOIN ctg_modalidad_escolar AS me ON dc.IdModalidadEscolar = me.id
-                            JOIN ctg_tanda_escolar AS te ON dc.idTandaEscolar = te.id
-                            JOIN ctg_sector_escolar AS se ON dc.idSector = se.id
-                            JOIN ctg_zona_escolar AS ze ON dc.idZona = ze.id
                             ORDER BY dc.id DESC LIMIT 1";
                         
                     $statement = $conn->prepare($sql);                    
@@ -337,20 +333,53 @@ class Escuela {
     }
 # --------------------------------------------------
 
+public function insertarDatos($arrayDeDatos) {
+
+    $conn = Conexion::singletonConexion();
+    $conn = $conn->conn(2,'s');
+    
+    if( !isset($conn) ) {
+        //echo "<script>alert('NO HAY CONEXION en escuela')</script>";
+    } else {
+        //echo "<script>alert('la conexion se mantiene en actualizardatos'); </script>";     
+                    
+        # implode convierte el array en una cadena separada por el simbolo elegido.
+        $cadenaDeDatos = implode( "||", $arrayDeDatos );
+        //echo $cadenaDeDatos;
+        //echo "<script>alert('$cadenaDeDatos'); </script>"; 
+        
+        # el procedure insertarDatos recibre 2 parametros
+        # el primero un numero que identifica el tipodeDatos a actualizar
+        # el segundo la cadena con los datos.
+        # Ver procedure insetarDatos() en base de datos sesiones.
+        $statement = $conn->prepare("CALL insertarDatos(1,'$cadenaDeDatos')");
+        $statement->execute();
+        $resultado = $statement->fetchAll();
+
+        //print_r($resultado);
+        if ($resultado) {
+            return true;                
+        } else {                
+            return false;
+        }
+    }
+}
+# --------------------------------------------------
+
     public function actualizarDatos($idEscuela,$arrayDeDatos) {
 
         $conn = Conexion::singletonConexion();
         $conn = $conn->conn(2,'s');
         
         if( !isset($conn) ) {
-            echo "<script>alert('NO HAY CONEXION en escuela')</script>";
+            //echo "<script>alert('NO HAY CONEXION en escuela')</script>";
         } else {
             //echo "<script>alert('la conexion se mantiene en actualizardatos'); </script>";     
                         
             # implode convierte el array en una cadena separada por el simbolo elegido.
             $cadenaDeDatos = implode( "||", $arrayDeDatos );
-            echo $cadenaDeDatos;
-            echo "<script>alert('$cadenaDeDatos'); </script>"; 
+            //echo $cadenaDeDatos;
+            //echo "<script>alert('$cadenaDeDatos'); </script>"; 
             # el procedure actulizarDatos recibre 3 parametros
             # el primero un numero que identifica el tipodeDatos a actualizar
             # el segundo el id de registro a actualizar
@@ -362,7 +391,7 @@ class Escuela {
             $statement->execute();
             $resultado = $statement->fetchAll();
 
-            print_r($resultado);
+            //print_r($resultado);
             if ($resultado) {
                 return true;                
             } else {                

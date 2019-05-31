@@ -1,8 +1,7 @@
-drop procedure actualizarDatos;
+drop procedure insertarDatos;
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `actualizarDatos`(
-	in tipoDatos int(2),    
-    in idEscuela int(6),
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarDatos`(
+	in tipoDatos int(2),        
     in cadenaDeDatos text    
 )
 begin    
@@ -64,19 +63,29 @@ if (tipoDatos = 1) then
 		set sql_error = true;
     else    
 	    
-		-- 1 actualiza el registro en la tabla ses_descripcion_centro
-		update ses_descripcion_centro 
-        set 		  
-		  codigoCentroEscolar = codigoCentroEscolar_var,
-          nombreCentroEscolar = nombreCentroEscolar_var,		  
-		  idModalidadEscolar = modalidadEscolar_var,
-		  idTandaEscolar = tandaEscolar_var,
-          direccion = direccion_var,
-		  idSector = sector_var,
-		  idZona = zona_var,		  
-		  telefono = telefono_var,
-		  fechaApertura = fechaApertura_var
-          where id = idEscuela;
+		-- 1 insetar los datos en la tabla ses_descripcion_centro
+		insert into ses_descripcion_centro (         		  
+		  codigoCentroEscolar,
+          nombreCentroEscolar,
+		  idModalidadEscolar,
+		  idTandaEscolar,
+          direccion,
+		  idSector,
+		  idZona,
+		  telefono,
+		  fechaApertura
+          )
+          values ( 
+          codigoCentroEscolar_var,
+          nombreCentroEscolar_var,		  
+		  modalidadEscolar_var,
+		  tandaEscolar_var,
+          direccion_var,
+		  sector_var,
+		  zona_var,		  
+		  telefono_var,
+		  fechaApertura_var
+          );
     end if;            
     
     if (sql_error = false) then
