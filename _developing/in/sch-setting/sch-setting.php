@@ -6,6 +6,12 @@
     $idRol = $_SESSION['identificar']['idPersona'];
     //echo "<script>alert('$idRol')</script>";
     
+    # el selector sirve para indicar cual parte del codigo se va a ejecutar.
+    # recive su valor por AJAX -> ver functions.js
+    if (isset($_POST['selector'])) {
+        $selector = limpiarDatos($_POST['selector']);        
+    } 
+
     $nuevodatosEscuela = array(
         'codigoCentroEscolar' => ( isset($_GET['codigoCentroEscolar']) ) ? limpiarDatos($_GET['codigoCentroEscolar']):null,
         'nombreCentroEscolar' => (isset($_GET['nombreCentroEscolar'])) ? limpiarDatos($_GET['nombreCentroEscolar']):null,
@@ -65,7 +71,7 @@
         }
     } 
     
-    if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+    if ( ($_SERVER['REQUEST_METHOD'] == 'POST') && ($selector == 1) ) {
         # devuelve la informacion mediante AJAX - ver functions.js -> cargarDatos()
         
         $modalidadEscolar = $escuela->categoria('ctg_modalidad_escolar');
@@ -81,14 +87,14 @@
             if(isset($arrayEscuela[0])) {
                 echo $arrayEscuela[0]['codigoCentroEscolar'];
             }
-            echo "' class=''>";
+            echo "' class=''></br>";
             #------------------------------------------------------------------------------
             echo "<label for='nombreCentroEscolar'>Nombre</label>
             <input id='nombreCentroEscolar' name='nombreCentroEscolar' type='text' value='";            
             if(isset($arrayEscuela[0])) {
                 echo $arrayEscuela[0]['nombreCentroEscolar'];
             }                
-            echo "' class=''>";
+            echo "' class=''></br>";
             #------------------------------------------------------------------------------        
             echo "<label for='modalidadEscolar'>Modalidad</label>
             <select id='modalidadEscolar' name='modalidadEscolar'>";
@@ -102,7 +108,7 @@
                 }
                 echo ">".$categoria['modalidadEscolar']."</option>";                                
             }                                
-            echo "</select>";
+            echo "</select></br>";
             #------------------------------------------------------------------------------
             echo "<label for='tandaEscolar'>Tanda</label>
             <select id='tandaEscolar' name='tandaEscolar'>";
@@ -116,14 +122,14 @@
                 }
                 echo ">".$categoria['tandaEscolar']."</option>";                                
             }                                
-            echo "</select>";
+            echo "</select></br>";
             #------------------------------------------------------------------------------      
             echo "<label for='direccion'>Dirección</label>
             <input id='direccion' name='direccion' type='text' value='";                
             if(isset($arrayEscuela[0])) {
                 echo $arrayEscuela[0]['direccion'];
             } 
-            echo "' class=''>";
+            echo "' class=''></br>";
             #------------------------------------------------------------------------------
             echo "<label for='sector'>Sector</label>
             <select id='sector' name='sector'>";
@@ -137,7 +143,7 @@
                 }
                 echo ">".$categoria['sectorEscolar']."</option>";                                
             }                                        
-            echo "</select>";
+            echo "</select></br>";
             #------------------------------------------------------------------------------      
             echo "<label for='zona'>Zona</label>
             <select id='zona' name='zona'>";
@@ -151,25 +157,53 @@
                 }
                 echo ">".$categoria['zonaEscolar']."</option>";                                
             }                                        
-            echo "</select>";
+            echo "</select></br>";
             #------------------------------------------------------------------------------
             echo "<label for='telefono'>Telefono</label>
             <input id='telefono' name='telefono' type='text' value='";
             if(isset($arrayEscuela[0])) {  
                 echo $arrayEscuela[0]['telefono'];
             }    
-            echo "' class=''>";
+            echo "' class=''></br>";
             #------------------------------------------------------------------------------
             echo "<label for='fechaApertura'>Fecha Apertura</label>
             <input id='fechaApertura' name='fechaApertura' type='date' value='";
             if(isset($arrayEscuela[0])) {  
                 echo $arrayEscuela[0]['fechaApertura'];
             }    
-            echo "' class=''>";
+            echo "' class=''></br>";
         #------------------------------------------------------------------------------
         echo "<button type='submit' class='btn btn-primary' id='up-form-btn'>Actualizar</button>
         </form>";
         #------------------------------------------------------------------------------
+    } else if ( ($_SERVER['REQUEST_METHOD'] == 'POST') && ($selector == 2) ) {
+        
+        $annoEscolar = $escuela->categoria('ctg_anno_escolar');
+        $periodoEscolar = $escuela->categoria('ctg_periodo_escolar');
+
+        echo "<form action='' id='anno-form' name='anno-form' method='get'>";
+            echo "<label for='anno-escolar'>Año Escolar</label>";
+            echo "<select name='' id=''>";
+            foreach ($annoEscolar as $ctg) {
+                echo "<option value='".$ctg['id']."'"; if(false){ echo "selected";}; echo ">".$ctg['annoInicio']."-".$ctg['annoTermino']."</option>";
+                
+            }
+            echo "</select></br>";
+            echo "<label for='periodoEscolar'>Periodo Escolar</label>";
+            echo "<select name='periodoEscolar' id='periodoEscolar'>";
+            foreach ($periodoEscolar as $ctg) {
+                echo "<option value='".$ctg['id']."'"; if(false){ echo "selected";}; echo ">".$ctg['tipoPeriodo']."</option>";
+                
+            }                
+            echo "</select></br>";
+            echo "<label for='fechaInicio'>Fecha Inicio</label>";
+            echo "<input type='date' id='fechaInicio' name='fechaInicio' class='' value=''></br>";
+            echo "<label for='fechaTermino'>Fecha Termino</label>";
+            echo "<input type='date' id='fechaTermino' name='fechaTermino' class='' value=''></br>";
+            echo "<label for='fechaLimite'>Fecha Limite Cierre</label>";
+            echo "<input type='date' id='fechaLimite' name='fechaLimite' class='' value=''></br>";
+            echo "<button type='submit' class='btn btn-primary' id='anno-form-btn'>Iniciar Año</button>";
+        echo "</form>";
     } else {
         include './../views/sch-setting.view.php';        
     }

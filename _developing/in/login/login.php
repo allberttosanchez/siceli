@@ -11,8 +11,8 @@
             $persona = Persona::singletonPersona(); 
             
             # se conecta a la base de datos.
-            $huboLogin = $persona->login(4,'u',$user,$pass); # (ver class.php - Persona)
-            # 4 = privilegios de usuario:reader, u = basedatos:usuarios
+            $huboLogin = $persona->login(4,'s',$user,$pass); # (ver class.php - Persona)
+            # 4 = privilegios de usuario:reader, s = basedatos:siceli
             # metodo login recibe 4 parametros: tipoDeUsuario,InicialBaseDatos,usuario,contraseña
             # verifica los datos de conexion para iniciar sesion.
             # devuelve true o false;                    

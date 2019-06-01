@@ -31,10 +31,7 @@ class Conexion {
     );
     # Contiene los nombres de las bases de datos.
     protected $nombrebd = array(
-        'usuarios' => 'siceli_usersdb',
-        'asignaturas' => 'siceli_asignaturas',
-        'sesiones' => 'siceli_sesionesdb',
-        'records' => 'siceli_record_db'  
+        'siceli' => 'siceli_proyectdb'         
     );
 # ----------------------------------------------------   
     # método singleton
@@ -73,15 +70,9 @@ class Conexion {
                 break;
         }
 
-        if (self::$i == "u") {
-            $nombrebasedatos = $this->nombrebd['usuarios'];
-        } else if (self::$i == "a") {
-            $nombrebasedatos = $this->nombrebd['asignaturas'];
-        } else if (self::$i == "s") {
-            $nombrebasedatos = $this->nombrebd['sesiones'];
-        } else if (self::$i == "r") {
-            $nombrebasedatos = $this->nombrebd['records'];
-        }
+        if (self::$i == "s") {
+            $nombrebasedatos = $this->nombrebd['siceli'];
+        } 
 
         try {
             return new PDO("mysql:host=$this->servidor;dbname=$nombrebasedatos", "$usuario", "$password");      
@@ -184,7 +175,7 @@ class Persona {
                 
         $conn = Conexion::singletonConexion(); 
 
-        $conn = $conn->conn(4,"u"); # Ver clase Conexion.
+        $conn = $conn->conn(4,"s"); # Ver clase Conexion.
 
         if( !isset($conn) ) {
             //echo "<script>alert('NO HAY CONEXION EN ROL')</script>";

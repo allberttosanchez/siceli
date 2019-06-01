@@ -47,11 +47,28 @@ function cargarDatos(lugar) {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // Carga los datos obtenidos del index.php en el elemento con el id=set-wrap
-                document.getElementById("set-wrap").innerHTML = this.responseText;                
+                document.getElementById("set-wrap").innerHTML = this.responseText; 
+                
             }
         };
         xhttp.open("POST","./index.php", true);
-        xhttp.send();
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('selector=1');
+        // selector se envia por post para controlar la ejecucion del codigo.
+
+    } else if (lugar == 'anno') {
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Carga los datos obtenidos del index.php en el elemento con el id=set-wrap
+                document.getElementById("set-wrap").innerHTML = this.responseText; 
+                
+            }
+        };
+        xhttp.open("POST","./index.php", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send('selector=2');
+        // selector se envia por post para controlar la ejecucion del codigo.
 
     }
 
