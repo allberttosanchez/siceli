@@ -14,6 +14,8 @@
                 <h2> Bienvenido <?php echo $_SESSION['identificar']['userName']." - ";?>Dashboard</h2>              
             <?php elseif (strpos($_SERVER['PHP_SELF'],'sch-setting')>0) : ?>
                 <h2> Gestionar Centro Educativo</h2>              
+            <?php elseif (strpos($_SERVER['PHP_SELF'],'sch-students')>0) : ?>
+                <h2> Gestión de Estudiantes</h2>              
         <?php endif; ?>
         </div>        
     </div>

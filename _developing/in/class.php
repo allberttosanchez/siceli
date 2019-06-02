@@ -139,7 +139,7 @@ class Persona {
                 echo "<script>alert('NO HAY CONEXION')</script>";
             } else {
                 
-                $sql = "SELECT * FROM scl_userslogin WHERE usersName = :user ";
+                $sql = "SELECT * FROM scl_users_login WHERE usersName = :user ";
                 
                 $statement = $conn->prepare($sql);                    
                 # atrapa el usuario de la base de datos.

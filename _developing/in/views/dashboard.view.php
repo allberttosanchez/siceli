@@ -18,8 +18,8 @@
             <aside class="aside col-md-4">
                 <h2>MENU</h2>
                 <a href="./../?sch-setting"><i class="fas fa-list-ol"></i>Gestionar Centro Educativo</a>
-                <a href="newstudent.php"><i class="fas fa-user-plus"></i>Gestionar Estudiantes</a><br>
-                <a href="newstudent.php"><i class="fas fa-user-plus"></i>Gestionar Docentes</a><br>
+                <a href="./../?sch-students"><i class="fas fa-user-plus"></i>Gestionar Estudiantes</a><br>
+                <!-- <a href="./../?sch-teachers"><i class="fas fa-user-plus"></i>Gestionar Docentes</a><br> -->
                 <!--a href="studentlist.php"><i class="fas fa-list-ol"></i> Lista de Estudiantes</a-->
             </aside>
         </main>

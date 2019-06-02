@@ -19,6 +19,12 @@ if (strpos($url,'login')>0) {
 
 } else if (strpos($url,'sch-setting')>0) { 
    header('Location: ./sch-setting/');
+
+} else if (strpos($url,'sch-students')>0) { 
+   header('Location: ./sch-students/');
+      
+} else if (strpos($url,'sch-teachers')>0) { 
+   header('Location: ./sch-teachers/');
       
 } else {
    header('Location: ./../');

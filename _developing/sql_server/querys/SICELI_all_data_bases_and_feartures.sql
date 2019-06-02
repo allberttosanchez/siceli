@@ -8,13 +8,13 @@ USE siceli_proyectDB;
 
 --  CATALOGO / CATEGORIAS --------------------
 
--- TABLA ctg_terminosPoliticas en ella se aloja un catalogo con las opciones para aceptar o rechazar las politicas y termino de privacidad
-create table if not exists ctg_terminosPoliticas(
+-- TABLA ctg_terminos_politicas en ella se aloja un catalogo con las opciones para aceptar o rechazar las politicas y termino de privacidad
+create table if not exists ctg_terminos_politicas(
 	id int not null auto_increment,
     opc varchar(20) default null,
     primary key(id)
 ) engine InnoDB;
-insert into ctg_terminosPoliticas (id,opc) values (1,'aceptado'), (2,'rechazado');
+insert into ctg_terminos_politicas (id,opc) values (1,'aceptado'), (2,'rechazado');
 
 -- TABLA ctg_paises en ella se aloja un catalogo con los nombre de los paises em español
 CREATE TABLE IF NOT EXISTS ctg_paises (
@@ -74,16 +74,16 @@ INSERT INTO `ctg_paises` VALUES
 (231, 'VU', 'Vanuatu'), (232, 'VE', 'Venezuela'), (233, 'VN', 'Vietnam'), (234, 'VG', 'Islas Vírgenes Británicas'), (235, 'VI', 'Islas Vírgenes de los Estados Unidos'),
 (236, 'WF', 'Wallis y Futuna'), (237, 'YE', 'Yemen'), (238, 'DJ', 'Yibuti'), (239, 'ZM', 'Zambia'), (240, 'ZW', 'Zimbabue');
 
--- TABLA ctg_tiposangre en ella se aloja un catalogo con los nombre de los tipos de sangre
+-- TABLA ctg_tipo_sangre en ella se aloja un catalogo con los nombre de los tipos de sangre
 -- utilizar query catalogo_tipo_sangre_esp.sql para rellenar los valores.
-CREATE TABLE IF NOT EXISTS ctg_tipoSangre(
+CREATE TABLE IF NOT EXISTS ctg_tipo_sangre(
 	id INT NOT NULL auto_increment,
     iso varchar(3) not null,
     tipo varchar(30) not null,
     primary key(id)
 ) engine InnoDB;
 
-INSERT INTO ctg_tiposangre (id,iso,tipo) VALUES
+INSERT INTO ctg_tipo_sangre (id,iso,tipo) VALUES
 (1,'APO','A+'),
 (2,'ANE','A-'),
 (3,'BPO','B+'),
@@ -93,9 +93,9 @@ INSERT INTO ctg_tiposangre (id,iso,tipo) VALUES
 (7,'OPO','O+'),
 (8,'ONE','O-');
 
--- TABLA ctg_tipoDeclaracion en ella se aloja un catalogo con los tipos de claraciones
+-- TABLA ctg_tipo_declaracion en ella se aloja un catalogo con los tipos de claraciones
 -- utilizar query catalogo_tipo_declaracion_nacimiento.sql para rellenar los valores.
-CREATE TABLE IF NOT EXISTS ctg_tipoDeclaracion(
+CREATE TABLE IF NOT EXISTS ctg_tipo_declaracion(
 	id int not null auto_increment,
     iso varchar(3) not null,
     tipo varchar(30) not null,
@@ -116,9 +116,9 @@ INSERT INTO ctg_roles (id,rol) VALUES
 (3,'OPERATOR'),
 (4,'READER');
 
--- TABLA ctg_tipodni en ella se aloja un catalogo con los tipos de numero unico de identidad: cedula o pasaporte.
+-- TABLA ctg_tipo_dni en ella se aloja un catalogo con los tipos de numero unico de identidad: cedula o pasaporte.
 -- utilizar query catalogo_tipodni.sql para rellenar los valores.
-CREATE TABLE IF NOT EXISTS ctg_tipoDNI(
+CREATE TABLE IF NOT EXISTS ctg_tipo_dni(
 	id int not null auto_increment,
     tipo varchar(30),
     primary key(id)
@@ -294,7 +294,7 @@ insert into ctg_area_profesional (id,nombre) values
 CREATE TABLE IF NOT EXISTS scl_personas(
 	id INT NOT NULL auto_increment,
     fechaCreacion TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    fechaActualizacion TIMESTAMP on update current_timestamp default null,
+    fechaActualizacion TIMESTAMP on update current_timestamp,
     nombres varchar(50) not null,    
     apellido1 varchar(50) not null,    
     apellido2 varchar(50) default null,
@@ -310,15 +310,15 @@ CREATE TABLE IF NOT EXISTS scl_personas(
     
     constraint persona_tipoSangre
     foreign key(tipoSangre)
-    references ctg_tipoSangre(id) -- relacion con tipo de sangre.
+    references ctg_tipo_sangre(id) -- relacion con tipo de sangre.
 ) engine InnoDB;
 
--- TABLA scl_userslogin en ella se alojaran los datos de inicio de sesion y validacion de usuario.
-CREATE TABLE IF NOT EXISTS scl_usersLogin(
+-- TABLA scl_users_login en ella se alojaran los datos de inicio de sesion y validacion de usuario.
+CREATE TABLE IF NOT EXISTS scl_users_login(
 	id INT NOT NULL auto_increment,
     idPersona INT NOT NULL unique,
     fechaCreacion TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    fechaActualizacion TIMESTAMP on update current_timestamp default null,    
+    fechaActualizacion TIMESTAMP on update current_timestamp,    
     usersName varchar(30) not null unique,
 	usersPassword varchar(50) not null,
     securityToken varchar(200),
@@ -328,13 +328,13 @@ CREATE TABLE IF NOT EXISTS scl_usersLogin(
     references scl_personas(id) -- relacion con personas.
 ) engine InnoDB;
 
--- TABLA scl_registroNacimiento en ella se alojaran los datos de la partida de nacimiento como identidad verificada.
+-- TABLA scl_registro_nacimiento en ella se alojaran los datos de la partida de nacimiento como identidad verificada.
 
-CREATE TABLE IF NOT EXISTS scl_registroNacimiento(
+CREATE TABLE IF NOT EXISTS scl_registro_nacimiento(
 	id INT NOT NULL auto_increment,
     idPersona INT NOT NULL UNIQUE,
     fechaCreacion TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    fechaActualizacion TIMESTAMP on update current_timestamp default null,    
+    fechaActualizacion TIMESTAMP on update current_timestamp,    
     
     nombreEmisor varchar(100) default null, -- J.C.E.     
 	nombreOficialia varchar(30) default null,        
@@ -356,11 +356,11 @@ CREATE TABLE IF NOT EXISTS scl_registroNacimiento(
         
     constraint registroNacimiento_tipoDeclaracion
     foreign key(tipoDeclaracion)
-    references ctg_tipoDeclaracion(id), -- relacion con tipo de declaracion: oportuna o tardia
+    references ctg_tipo_declaracion(id), -- relacion con tipo de declaracion: oportuna o tardia
     	
     constraint registroNacimiento_tipoDNI
     foreign key(tipoDNI)
-    references ctg_tipoDNI(id)  -- relacion con tipo de declaracion: oportuna o tardia
+    references ctg_tipo_dni(id)  -- relacion con tipo de declaracion: oportuna o tardia
 ) engine InnoDB;
 
 -- TABLA scl_identidad en ella se alojaran los datos que definen la identidad de la persona.
@@ -369,7 +369,7 @@ CREATE TABLE IF NOT EXISTS scl_identidad(
     idPersona INT NOT NULL UNIQUE,
     idRegistroNacimiento INT not null,
     fechaCreacion TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    fechaActualizacion TIMESTAMP on update current_timestamp DEFAULT NULL,    
+    fechaActualizacion TIMESTAMP on update current_timestamp,    
 	nacionalidad int default null, 
     estadoCivil varchar(30),        
     numeroIdentidad varchar(20) unique default null, -- cedula o pasaporte
@@ -384,7 +384,7 @@ CREATE TABLE IF NOT EXISTS scl_identidad(
     
     constraint identidad_registroNacimiento 
     foreign key(idRegistroNacimiento)
-    references scl_registroNacimiento(id), -- relacion con registro nacimiento
+    references scl_registro_nacimiento(id), -- relacion con registro nacimiento
     
     constraint identidad_paises 
     foreign key(nacionalidad)
@@ -395,12 +395,12 @@ CREATE TABLE IF NOT EXISTS scl_identidad(
     references ctg_genero(id) -- relacion con tipo de sexo.
 ) engine InnoDB;
 
--- TABLA scl_informacionContacto en ella se alojaran los datos para contactar a las personas.
-CREATE TABLE IF NOT EXISTS scl_informacionContacto(
+-- TABLA scl_informacion_contacto en ella se alojaran los datos para contactar a las personas.
+CREATE TABLE IF NOT EXISTS scl_informacion_contacto(
 	id INT NOT NULL auto_increment,
     idPersona INT NOT NULL UNIQUE,
     fechaCreacion TIMESTAMP NOT NULL DEFAULT current_timestamp,
-    fechaActualizacion TIMESTAMP on update current_timestamp default null,    
+    fechaActualizacion TIMESTAMP on update current_timestamp,    
     direccion1 varchar(100),     
 	direccion2 varchar(100),        
     sector varchar(50),
@@ -423,14 +423,14 @@ CREATE TABLE IF NOT EXISTS scl_informacionContacto(
     references ctg_paises(id)
 ) engine InnoDB;
 
--- TABLA scl_informacionContacto en ella se alojaran los datos que definen la funciones (cargo) de las personas.
+-- TABLA scl_informacion_contacto en ella se alojaran los datos que definen la funciones (cargo) de las personas.
 CREATE TABLE IF NOT EXISTS scl_roles_de_personas(
 	id int not null auto_increment,
     idPersona int not null unique, #fk
     idRol int default null, #fk
     idAreaProfesional int default null, #fk
     f_inicio timestamp not null default current_timestamp,
-    f_termino timestamp default null,
+    f_termino timestamp,
     estado int default null, -- activo, inactivo, retirado, desertor, finalizado
     primary key(id),    
 	
@@ -456,7 +456,7 @@ create table if not exists scl_terminos_y_politicas(
 	id int not null auto_increment,
     idPersona int not null unique, -- relacionado scl_personas
     fechaCreacion timestamp default current_timestamp,
-    fechaActualizacion timestamp on update current_timestamp default null,
+    fechaActualizacion timestamp on update current_timestamp,
     terminosAceptados int default null, -- relacionado ctg_terminos_y_politicas_aceptadas
     politicasAceptadas int default null, -- relacionado ctg_terminos_y_politicas_aceptadas
     primary key(id),
@@ -467,11 +467,11 @@ create table if not exists scl_terminos_y_politicas(
     
     constraint terminos_opciones
     foreign key (terminosAceptados)
-    references ctg_terminosPoliticas(id),    
+    references ctg_terminos_politicas(id),    
     
     constraint politicas_opciones
     foreign key (politicasAceptadas)
-    references ctg_terminosPoliticas(id)
+    references ctg_terminos_politicas(id)
 ) engine InnoDB;
 
 
@@ -483,7 +483,7 @@ create table if not exists scl_estudiantes_activos(
     idRoles int not null, # fk
     idEstado int not null, # fk
     fechaCreacion timestamp default current_timestamp not null,
-    fechaActualizacion timestamp on update current_timestamp default null,        
+    fechaActualizacion timestamp on update current_timestamp,        
     primary key (id),
     
     constraint EstudiantesActivos_roles_personas
@@ -509,7 +509,7 @@ create table if not exists scl_profesores_activos(
     idRoles int not null, # fk
     idEstado int not null, # fk
     fechaCreacion timestamp default current_timestamp not null,
-    fechaActualizacion timestamp on update current_timestamp default null,        
+    fechaActualizacion timestamp on update current_timestamp,        
     primary key (id),
     
     constraint ProfesoresActivos_roles_personas
@@ -530,44 +530,51 @@ create table if not exists scl_profesores_activos(
 -- VIEWS ----------------------------------------------------------------------
 -- ----------------------------------------------------------------------------
 
+drop view if exists vw_users;
 -- esta vista contiene la informacion para iniciar sesion.
 CREATE view vw_users as
 select lg.idPersona as id,lg.fechaActualizacion,usersName,usersPassword,email,securityToken 
-from scl_userslogin as lg 
+from scl_users_login as lg 
 inner join scl_personas as p
 on p.id=lg.idPersona
-inner join scl_informacioncontacto as inf
+inner join scl_informacion_contacto as inf
 on inf.idPersona=p.id;
 
+drop view if exists vw_estudiantes;
 # Esta vista contiene la informacion de todas las personas estudiantes.
 CREATE VIEW vw_estudiantes
 AS select p.id,nombres,apellido1,apellido2,sexo,fechaNacimiento,lugarNacimiento,TipoSangre,idRol,idAreaProfesional,estado 
 from scl_personas as p inner join scl_roles_de_personas as rp
 on p.id=rp.idPersona
-where rp.idRol=5;
+where rp.idAreaProfesional<7 and rp.idAreaProfesional>9;
 
+drop view if exists vw_estudiantes_activos;
 # Esta vista contiene la informacion de las personas estudiantes activas.
 CREATE VIEW vw_estudiantes_activos
 AS select p.id,nombres,apellido1,apellido2,sexo,fechaNacimiento,lugarNacimiento,TipoSangre,idRol,idAreaProfesional,estado 
 from scl_personas as p inner join scl_roles_de_personas as rp
 on p.id=rp.idPersona
-where rp.idRol=5 and estado=1;
+where rp.idAreaProfesional<7 and rp.idAreaProfesional>9 and estado=1;
 
 -- TRIGGER ------------------------------------------------------------------------
 -- --------------------------------------------------------------------------------
 
+drop trigger if exists insert_roles_de_personas_estudiantes;
 # Trigger en scl_estudiantes_activos al insertar en la tabla  scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER insert_roles_de_personas_estudiantes
 AFTER INSERT ON scl_roles_de_personas # se indica el momento (before=antes)de la ejecucion y en que evento (update) ocurrira  
 FOR EACH ROW # se ejecutara por cada fila afectada
 	BEGIN    
-		if (new.idRol=5 and new.estado=1) then
+		 # idAreaProfesional = 7 (Estudiante de Bachillerato), estado = 1 (Activo)
+         # idRoles pertenece a la tabla scl_roles_de_personas
+		if (new.idAreaProfesional>=7 and new.idAreaProfesional<=9 and new.estado=1) then
 			insert into scl_estudiantes_activos (idRoles,idEstado) VALUES (new.id,new.estado);
 		end if; 
 	END //
 DELIMITER ;
 
+drop trigger if exists update_roles_de_personas_estudiantes;
 # Trigger en scl_estudiantes_activos al actualizar en la tabla scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER update_roles_de_personas_estudiantes
@@ -582,11 +589,12 @@ FOR EACH ROW # se ejecutara por cada fila afectada
         where idRoles=old.id;
         
         if counter_var=0 then # verifica que no exista el registro actualizado en la tabla scl_estudiantes_activos
-			if (new.idRol=5 and new.estado=1) then # verifica si es estudiante activo
+			if (new.idAreaProfesional>=7 and new.idAreaProfesional<=9 and new.estado=1) then # verifica si es estudiante activo
+				# idRoles pertenece a la tabla scl_roles_de_personas
 				insert into scl_estudiantes_activos (idRoles,idEstado) VALUES (new.id,new.estado);
 			end if;
 		else
-			if (new.idRol!=5 or new.estado!=1) then # verifica si no es estudiante o si no esta activo
+			if (new.idAreaProfesional<7 or new.idAreaProfesional>9 or new.estado!=1) then # verifica si no es estudiante de bachillerato o si no esta activo
 				delete from scl_estudiantes_activos # lo borra de la tabla scl_estudiantes_activos 				
 				where idRoles=old.id;
 			end if;
@@ -594,6 +602,7 @@ FOR EACH ROW # se ejecutara por cada fila afectada
 	END //
 DELIMITER ;
 
+drop trigger if exists delete_roles_de_personas_estudiantes;
 # Trigger en scl_estudiantes_activos al borrar en la tabla  scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER delete_roles_de_personas_estudiantes
@@ -607,20 +616,20 @@ DELIMITER ;
 
 -- ----------------------------------------------------
 
-
+drop trigger if exists insert_roles_de_personas_profesores;
 # Trigger en scl_profesores_activos al insertar en la tabla  scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER insert_roles_de_personas_profesores
 AFTER INSERT ON scl_roles_de_personas # se indica el momento (before=antes)de la ejecucion y en que evento (update) ocurrira  
 FOR EACH ROW # se ejecutara por cada fila afectada
 	BEGIN    
-		if (new.idRol=5 and new.estado=1) then
+		if (new.idAreaProfesional<7 or new.idAreaProfesional>9 and new.estado=1) then
 			insert into scl_profesores_activos (idRoles,idEstado) VALUES (new.id,new.estado);
 		end if; 
 	END //
 DELIMITER ;
 
-
+drop trigger if exists update_roles_de_personas_profesores;
 # Trigger en scl_profesores_activos al actualizar en la tabla scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER update_roles_de_personas_profesores
@@ -635,11 +644,11 @@ FOR EACH ROW # se ejecutara por cada fila afectada
         where idRoles=old.id;
         
         if counter_var=0 then # verifica que no exista el registro actualizado en la tabla scl_profesores_activos
-			if (new.idRol=9 and new.estado=1) then # verifica si es profesor activo
+			if (new.idAreaProfesional<7 or new.idAreaProfesional>9 and new.estado=1) then # verifica si es profesor activo
 				insert into scl_profesores_activos (idRoles,idEstado) VALUES (new.id,new.estado);
 			end if;
 		else
-			if (new.idRol!=9 or new.estado!=1) then # verifica si no es profesor o si no esta activo
+			if (new.idAreaProfesional>=7 and new.idAreaProfesional<=9 or new.estado!=1) then # verifica si no es profesor o si no esta activo
 				delete from scl_profesores_activos # lo borra de la tabla scl_profesores_activos 				
 				where idRoles=old.id;
 			end if;
@@ -647,7 +656,7 @@ FOR EACH ROW # se ejecutara por cada fila afectada
 	END //
 DELIMITER ;
 
-
+drop trigger if exists delete_roles_de_personas_profesores;
 # Trigger en scl_profesores_activos al borrar en la tabla  scl_roles_de_personas
 DELIMITER //
 CREATE TRIGGER delete_roles_de_personas_profesores
@@ -702,17 +711,17 @@ begin
          
         if (idPersona_var!=null) or (idPersona_var>0) then        
 			-- 3
-			insert into scl_registronacimiento (idPersona) -- crear registro para el registro de nacimiento        
+			insert into scl_registro_nacimiento (idPersona) -- crear registro para el registro de nacimiento        
 			values (idPersona_var);
             
             -- 3.1
 			insert into scl_terminos_y_politicas (idPersona) -- crear registro para los terminos y politicas aceptadas 
 			values (idPersona_var);
 			-- 4
-			-- obtiene el ultimo id de la tabla scl_registronacimiento
+			-- obtiene el ultimo id de la tabla scl_registro_nacimiento
 			select id top -- top devuelve el primer registro encontrado, el de arriba.
 			into reg_nacimiento_var -- envia el valor a la variable.
-			from scl_registronacimiento
+			from scl_registro_nacimiento
 			order by id desc
 			limit 1;        
          
@@ -721,7 +730,7 @@ begin
 				insert into scl_identidad (idPersona,idRegistroNacimiento) -- crea el registro de la identidad
 				values (idPersona_var,reg_nacimiento_var);
 				-- 6
-				insert into scl_informacioncontacto (idPersona) -- crea el registro de la identidad
+				insert into scl_informacion_contacto (idPersona) -- crea el registro de la identidad
 				values (idPersona_var);
 				-- 7
 				insert into scl_roles_de_personas (idPersona) -- crea el registro de la identidad
@@ -761,13 +770,13 @@ begin
     declare continue handler for sqlexception
     set sql_error = true;
             
-    if (idPersona_var=(select idPersona from scl_userslogin as p where p.idPersona=idPersona_var limit 1)) 
+    if (idPersona_var=(select idPersona from scl_users_login as p where p.idPersona=idPersona_var limit 1)) 
 		or (idPersona_var<=0) or (idPersona_var=null) then
 			set sql_error = true;
 	else
 		start transaction;
 		-- 1 
-        insert into scl_userslogin (idPersona,usersName,usersPassword) -- crear registro para el login
+        insert into scl_users_login (idPersona,usersName,usersPassword) -- crear registro para el login
         values (idPersona_var,usuario_var,password_var); 
 	end if;
     
@@ -1166,8 +1175,8 @@ CREATE TABLE IF NOT EXISTS ses_anno_escolar(
     idannoEscolar int not null unique, # fk
     idPeriodoEscolar int not null, #fk
     fechaInicio timestamp not null default current_timestamp,
-    fechatermino timestamp default null,
-    fechaLimite timestamp default null,            
+    fechatermino timestamp,
+    fechaLimite timestamp,            
     primary key(id),
     
     constraint ses_anno_escolar_ses_descripcion_centro
@@ -1189,8 +1198,8 @@ create table if not exists ses_periodo_escolar(
     idAnnoEscolar int not null, # fk
     idPeriodoSesiones int not null, # fk
     fechaInicio timestamp default current_timestamp,
-    fechaTermino timestamp default null,
-    fechaLimite timestamp default null,
+    fechaTermino timestamp,
+    fechaLimite timestamp,
     primary key (id),
     
     constraint periodoEscolar_AnnoEScolar
@@ -1228,7 +1237,7 @@ create table if not exists ses_seccion_escolar(
 create table if not exists ses_estudiantes_inscritos(
 	id int not null auto_increment,
     fechaCreacion timestamp default current_timestamp not null,
-    fechaActualizacion timestamp on update current_timestamp default null,    
+    fechaActualizacion timestamp on update current_timestamp,    
     idSeccionEscolar int not null,
     idEstudiante int not null,
     primary key (id),
